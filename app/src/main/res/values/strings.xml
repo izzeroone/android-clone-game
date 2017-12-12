@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">CloneProject</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="header">2048</string>
+    <string name="high_score">HIGH SCORE</string>
+    <string name="win_score">WIN SCORE</string>
+    <string name="score">SCORE</string>
+    <string name="instructions">Swipe to move. 2 + 2 = 3.</string>
+    <string name="you_win">You Win!</string>
+    <string name="game_over">Game Over!</string>
+    <string name="go_on">Tap to Continue</string>
+    <string name="for_now">For now…</string>
+    <string name="endless">"Endless" Mode</string>
+    <string name="ready">Ready</string>
+    <string name="show">Make this!</string>
+
+    <!-- Confirmation dialog-->
+    <string name="reset">Reset</string>
+    <string name="continue_game">Cancel</string>
+    <string name="reset_dialog_title">Reset game?</string>
+    <string name="reset_dialog_message">Are you sure you wish to reset the game?</string>
+    <string name="game_not_start_message">The game hasn\'t started yet!</string>
+    <!-- Sample time-->
+    <string name="sample_time">00:00</string>
+</resources>
