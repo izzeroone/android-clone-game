@@ -4,6 +4,8 @@ package cyberse.cloneproject;
 
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +22,8 @@ public class MainGame {
     //Maximum number of mive to make winning state
     private static final int MAX_MOVE = 100;
     public static long timer = 0;
-    public final int numCellX = 5;
-    public final int numCellY = 5;
+    public final int numCellX = 3;
+    public final int numCellY = 3;
     private final Context mContext;
     private final MainView mView;
     public GameState gameState = GameState.NORMAL;
@@ -38,6 +40,9 @@ public class MainGame {
     private long bufferScore;
     private long startTime = 0;
 
+
+    //Sound
+    MediaPlayer step;
     public MainGame(Context context, MainView view){
         mContext = context;
         mView = view;
@@ -49,8 +54,8 @@ public class MainGame {
             grid = new Grid(numCellX, numCellY);
         } else{
             //we already have our grid so save them
-            prepareUndoState();
-            saveUndoState();
+            //prepareUndoState();
+            //saveUndoState();
             grid.clearGrid();
         }
 
@@ -191,7 +196,7 @@ public class MainGame {
 //            move((int)(Math.random() * 4));
 //            loop++;
 //        }
-        WinStateMaker maker = new WinStateMaker(numCellX - 1);
+        WinStateMaker maker = new WinStateMaker(numCellX );
         grid = maker.makeWinState(grid);
     }
 
@@ -309,6 +314,8 @@ public class MainGame {
     }
 
     private boolean moveAndCheck(int xx, int yy, int direction){
+        step = MediaPlayer.create(mContext,R.raw.step);
+        step.start();
         boolean moved = false;
         //the the moving vector
         Cell vector = getMovingVector(direction);

@@ -1,10 +1,12 @@
 package cyberse.cloneproject;
 
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +20,12 @@ public class MainActivity extends AppCompatActivity {
     public static Thread timerThread;
     public static TimerUpdateRunnable timerRunnable;
     private MainView view;
+
+
+    //Sound
+    MediaPlayer menuTheme;
+    MediaPlayer step;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
-
+        menuTheme = MediaPlayer.create(this,R.raw.music1);
+        menuTheme.start();
         timerThread.start();
         processUIThread.start();
 
@@ -64,19 +72,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        step= MediaPlayer.create(this, R.raw.step);
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             //Do nothing
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+            step.start();
             view.game.move(2);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+            step.start();
             view.game.move(0);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            step.start();
             view.game.move(3);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            step.start();
             view.game.move(1);
             return true;
         }
