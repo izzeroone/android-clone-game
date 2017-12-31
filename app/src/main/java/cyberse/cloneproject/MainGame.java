@@ -22,8 +22,8 @@ public class MainGame {
     //Maximum number of mive to make winning state
     private static final int MAX_MOVE = 100;
     public static long timer = 0;
-    public final int numCellX = 3;
-    public final int numCellY = 3;
+    public int numCellX = 3;
+    public int numCellY = 3;
     private final Context mContext;
     private final GameView mView;
     public GameState gameState = GameState.NORMAL;
@@ -46,8 +46,14 @@ public class MainGame {
     public MainGame(Context context, GameView view){
         mContext = context;
         mView = view;
+        //avoid game over on the beginning
         startTime = System.currentTimeMillis();
         timer = 0;
+    }
+
+    public void setSize(int numCellXX, int numCellYY){
+        numCellX = numCellXX;
+        numCellY = numCellYY;
     }
 
     public void newGame(){

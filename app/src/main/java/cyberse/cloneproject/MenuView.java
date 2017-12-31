@@ -46,8 +46,9 @@ public class MenuView extends View {
             backgroundRectangle = getResources().getDrawable(R.drawable.background_rectangle);
             backgroundPic = getResources().getDrawable(R.drawable.back_ground_pic);
             shareIcon = getResources().getDrawable(R.drawable.share);
-            playIcon = getResources().getDrawable(R.drawable.play_button);
+            playIcon = getResources().getDrawable(R.drawable.ic_play_button);
             soundIcon = getResources().getDrawable(R.drawable.mute);
+            this.setBackgroundColor(getResources().getColor(R.color.background));
             Typeface font = Typeface.createFromAsset(getResources().getAssets(), "fonts/ClearSans-Bold.ttf");
             paint.setTypeface(font);
             paint.setAntiAlias(true);
@@ -90,12 +91,10 @@ public class MenuView extends View {
         //draw back color
         paint.setColor(getResources().getColor(R.color.background));
         paint.setStyle(Paint.Style.FILL);
+
 //        canvas.drawPaint(paint);
-        drawDrawable(canvas, backgroundPic, 0, 0, width, height);
         //Draw play, sound and share icon
         drawDrawable(canvas, playIcon, playButtonRect);
-        drawDrawable(canvas, shareIcon, sXShare, sYIcon, sXShare + iconSize, sYIcon + iconSize);
-        drawDrawable(canvas, soundIcon, sXSound, sYIcon, sXSound + iconSize, sYIcon + iconSize);
 
     }
 
@@ -105,12 +104,12 @@ public class MenuView extends View {
         int screenMidY = height / 2;
         iconSize = width / 10;
         iconPadding = iconSize * 2 / 3;
-        playButtonRect.left = (int) (screenMidX - iconSize * 1.2);
-        playButtonRect.right = (int) (screenMidX + iconSize * 1.2);
+        playButtonRect.left = (int) (screenMidX - iconSize * 2);
+        playButtonRect.right = (int) (screenMidX + iconSize * 2);
 
         int playButtonHeight = iconSize * playIcon.getIntrinsicHeight() / playIcon.getIntrinsicWidth();
-        playButtonRect.top = (int) (screenMidY - playButtonHeight * 1.2);
-        playButtonRect.bottom = (int) (screenMidY + playButtonHeight * 1.2);
+        playButtonRect.top = (int) (screenMidY - playButtonHeight * 2);
+        playButtonRect.bottom = (int) (screenMidY + playButtonHeight * 2);
 
         sYIcon = screenMidY + iconSize * 4 + iconPadding;
         sXShare = screenMidX - iconSize / 2;
