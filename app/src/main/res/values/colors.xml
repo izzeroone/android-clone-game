@@ -6,6 +6,10 @@
     <color name="text_white">#f9f6f2</color>
     <color name="text_black">#776e65</color>
     <color name="text_brown">#d6cdc4</color>
+    <color name="text_downy">#65C6BB</color>
+    <color name="text_softred">#EC644B</color>
+    <color name="text_blue">#52B3D9</color>
+    <color name="text_cyan">#008B8B</color>
     <color name="background">#faf8ef</color>
     <color name="check_right">#b2ff59</color>
     <color name="check_wrong">#F64747</color>

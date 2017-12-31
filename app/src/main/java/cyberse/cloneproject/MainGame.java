@@ -5,7 +5,7 @@ package cyberse.cloneproject;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +14,10 @@ import java.util.List;
 public class MainGame {
     //timer and its update
     public static final int MAX_TIME = 60000;
-    private static final long MOVE_ANIMATION_TIME = MainView.BASE_ANIMATION_TINE;
-    private static final long SPAWN_ANIMATION_TIME = MainView.BASE_ANIMATION_TINE;
+    private static final long MOVE_ANIMATION_TIME = GameView.BASE_ANIMATION_TINE;
+    private static final long SPAWN_ANIMATION_TIME = GameView.BASE_ANIMATION_TINE;
     private static final long NOTIFICATION_DELAY_TIME = MOVE_ANIMATION_TIME + SPAWN_ANIMATION_TIME;
-    private static final long NOTIFICATION_ANIMATION_TIME = MainView.BASE_ANIMATION_TINE * 5;
+    private static final long NOTIFICATION_ANIMATION_TIME = GameView.BASE_ANIMATION_TINE * 5;
     private static final String HIGH_SCORE = "high score";
     //Maximum number of mive to make winning state
     private static final int MAX_MOVE = 100;
@@ -25,7 +25,7 @@ public class MainGame {
     public final int numCellX = 3;
     public final int numCellY = 3;
     private final Context mContext;
-    private final MainView mView;
+    private final GameView mView;
     public GameState gameState = GameState.NORMAL;
     public GameState lastGameState = GameState.NORMAL;
     public GameState bufferGameState = GameState.NORMAL;
@@ -43,12 +43,15 @@ public class MainGame {
 
     //Sound
     MediaPlayer step;
-    public MainGame(Context context, MainView view){
+    public MainGame(Context context, GameView view){
         mContext = context;
         mView = view;
+        startTime = System.currentTimeMillis();
+        timer = 0;
     }
 
     public void newGame(){
+        Log.d("timer", String.valueOf(timer));
         if(grid == null){
             //create new gird
             grid = new Grid(numCellX, numCellY);
@@ -83,8 +86,8 @@ public class MainGame {
         //show the winGrid
         gameState = GameState.READY;
         //reset time
-        if (MainActivity.timerRunnable != null)
-            MainActivity.timerRunnable.onPause();
+        if (GameActivity.timerRunnable != null)
+            GameActivity.timerRunnable.onPause();
         //cancel all animation and add spawn animation
         animationGrid.cancelAnimations();
         spawnGridAnimation();
@@ -107,7 +110,7 @@ public class MainGame {
             timer = 0;
             //starting counting time
             startTime = System.currentTimeMillis();
-            MainActivity.timerRunnable.onResume();
+            GameActivity.timerRunnable.onResume();
             //add spawn animation to all cell
             animationGrid.cancelAnimations();
             spawnGridAnimation();
@@ -190,12 +193,6 @@ public class MainGame {
 
     private void makeWinningState()
     {
-//        int loop = 0;
-//        while(grid.countOccupiedCell() > numCellX + 1 && loop <= MAX_MOVE){
-//            //move all cell to random direction
-//            move((int)(Math.random() * 4));
-//            loop++;
-//        }
         WinStateMaker maker = new WinStateMaker(numCellX );
         grid = maker.makeWinState(grid);
     }
@@ -472,7 +469,7 @@ public class MainGame {
     }
 
     private void endGame() {
-        MainActivity.timerRunnable.onPause();
+        GameActivity.timerRunnable.onPause();
         animationGrid.startAnimation(-1, -1, AnimationType.FADE_GLOBAL, NOTIFICATION_ANIMATION_TIME, NOTIFICATION_DELAY_TIME, null);
     }
 

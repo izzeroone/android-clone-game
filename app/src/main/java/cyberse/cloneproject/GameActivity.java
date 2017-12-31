@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     //debug string
     private static final String WIDTH = "width";
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String UNDO_GAME_STATE = "undo game state";
     public static Thread timerThread;
     public static TimerUpdateRunnable timerRunnable;
-    private MainView view;
+    private GameView view;
 
 
     //Sound
@@ -30,10 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        //Create a view
-        view = new MainView(this);
+        view = new GameView(this);
 
         //Load prefencense
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         //check if have state and load
 
@@ -52,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 view.redrawTimePercent();
-                                // update TextView here!
                             }
                         });
                     }

@@ -6,13 +6,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class InputListener implements View.OnTouchListener {
+public class GameListener implements View.OnTouchListener {
     private static final int SWIPE_MIN_DISTANCE = 0;
     private static final int SWIPE_THRESHOLD_VELOCITY = 10;
     private static final int MOVE_THRESHOLD = 100;
     private static final int RESET_STARTING = 10;
     private static final long LONG_PRESS_TIME = 300; // 1,5s
-    private final MainView mView;
+    private final GameView mView;
     private float x;
     private float y;
     private float lastDx;
@@ -32,7 +32,7 @@ public class InputListener implements View.OnTouchListener {
     private boolean beganOnGrid = false;
     private long timer;
 
-    public InputListener(MainView view) {
+    public GameListener(GameView view) {
         super();
         this.mView = view;
     }

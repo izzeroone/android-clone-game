@@ -38,7 +38,7 @@ public class MenuListener implements View.OnTouchListener {
                 y = event.getY();
                 if (beganOnIcon) {
                     if (rectanglePressed(mView.playButtonRect)) {
-                        Intent menuIntent = new Intent(mContext, MainActivity.class);
+                        Intent menuIntent = new Intent(mContext, GameActivity.class);
                         mContext.startActivity(menuIntent);
                     }
                 }
