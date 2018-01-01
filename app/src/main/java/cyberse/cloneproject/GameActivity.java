@@ -1,5 +1,6 @@
 package cyberse.cloneproject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -28,10 +29,27 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //load extra intent
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+
+        int numCellX, numCellY, time;
+        if(b!=null)
+        {
+            numCellX =(int) b.get("numCellX");
+            numCellY =(int) b.get("numCellY");
+            time =(int) b.get("time");
+        }
+        else {
+            numCellX = 3;
+            numCellY = 3;
+            time = 60000;
+        }
        //Create a view
         view = new GameView(this);
+        view.game.setSize(numCellX, numCellY, time);
+        view.game.newGame();
 
-        //Load prefencense
 
         //check if have state and load
 

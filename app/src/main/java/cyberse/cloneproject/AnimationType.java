@@ -9,5 +9,9 @@ public enum  AnimationType {
     MERGE,
     CHECK_RIGHT_CIRCLE,
     CHECK_WRONG_CIRCLE,
-    FADE_GLOBAL
+    FADE_GLOBAL,
+    SWIPE_LEFT,
+    SWIPE_RIGHT,
+    NONE
+
 }

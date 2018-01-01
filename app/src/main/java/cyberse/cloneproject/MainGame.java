@@ -13,7 +13,6 @@ import java.util.List;
 
 public class MainGame {
     //timer and its update
-    public static final int MAX_TIME = 60000;
     private static final long MOVE_ANIMATION_TIME = GameView.BASE_ANIMATION_TINE;
     private static final long SPAWN_ANIMATION_TIME = GameView.BASE_ANIMATION_TINE;
     private static final long NOTIFICATION_DELAY_TIME = MOVE_ANIMATION_TIME + SPAWN_ANIMATION_TIME;
@@ -39,6 +38,7 @@ public class MainGame {
     public float percent = 0;
     private long bufferScore;
     private long startTime = 0;
+    public static int maxTime = 60000;
 
 
     //Sound
@@ -51,13 +51,13 @@ public class MainGame {
         timer = 0;
     }
 
-    public void setSize(int numCellXX, int numCellYY){
+    public void setSize(int numCellXX, int numCellYY, int time){
         numCellX = numCellXX;
         numCellY = numCellYY;
+        maxTime = time;
     }
 
     public void newGame(){
-        Log.d("timer", String.valueOf(timer));
         if(grid == null){
             //create new gird
             grid = new Grid(numCellX, numCellY);
@@ -132,8 +132,8 @@ public class MainGame {
 
     public void update() {
         timer = System.currentTimeMillis() - startTime;
-        percent = 1.0f * timer / MAX_TIME;
-        if (timer > MAX_TIME) {
+        percent = 1.0f * timer / maxTime;
+        if (timer > maxTime) {
             gameState = GameState.LOST;
             endGame();
         }
@@ -469,7 +469,7 @@ public class MainGame {
                 }
             }
         }
-        mView.refreshLastTime = false;
+
         mView.resyncTime();
         mView.invalidate();
     }

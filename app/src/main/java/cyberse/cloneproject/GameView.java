@@ -57,8 +57,6 @@ public class GameView extends View {
     private int textPaddingSize;
     private int iconPaddingSize;
     //text size;
-    private float titleTextSize;
-    private float bodyTextSize;
     private float instructionTextSize;
     private float subInstructionTextSize;
     //Asset
@@ -71,10 +69,7 @@ public class GameView extends View {
     //text position
     private int sYInstruction;
     private int sYSubInstruction;
-    private int titleStartYAll;
-    private int bodyStartYAll;
     private int eYAll;
-    private int titleWidthScore;
     private int sYScore;
     //string
     private String instruction;
@@ -103,7 +98,7 @@ public class GameView extends View {
             Log.e(TAG, "Error getting assets?", e);
         }
         setOnTouchListener(new GameListener(this));
-        game.newGame();
+        //game.newGame();
     }
 
     @Override
@@ -354,17 +349,19 @@ public class GameView extends View {
                                 startAngle = 90;
                                 sweepAngle = 90 + (int) (360 * aCell.getPercentageDone());
                                 canvas.drawArc(new RectF(sX - cellSize / 10, sY - cellSize / 10, eX + cellSize / 10, eY + cellSize / 10), startAngle, sweepAngle, false, paint);
+                                paint.setStrokeWidth(1);
+                                paint.setStyle(Paint.Style.FILL);
                                 break;
-                            case CHECK_WRONG_CIRCLE:
-                                bitmapCell[index].setBounds(sX, sY, eX, eY);
-                                bitmapCell[index].draw(canvas);
-                                paint.setStrokeWidth(cellSize / 15);
-                                paint.setStyle(Paint.Style.STROKE);
-                                paint.setColor(getResources().getColor(R.color.check_wrong));
-                                sweepAngle = (int) (360 * (aCell.getPercentageDone()));
-                                startAngle = 270 - sweepAngle / 2;
-                                canvas.drawArc(new RectF(sX - cellSize / 15, sY - cellSize / 15, eX + cellSize / 15, eY + cellSize / 15), startAngle, sweepAngle, false, paint);
-                                break;
+//                            case CHECK_WRONG_CIRCLE:
+//                                bitmapCell[index].setBounds(sX, sY, eX, eY);
+//                                bitmapCell[index].draw(canvas);
+//                                paint.setStrokeWidth(cellSize / 15);
+//                                paint.setStyle(Paint.Style.STROKE);
+//                                paint.setColor(getResources().getColor(R.color.check_wrong));
+//                                sweepAngle = (int) (360 * (aCell.getPercentageDone()));
+//                                startAngle = 270 - sweepAngle / 2;
+//                                canvas.drawArc(new RectF(sX - cellSize / 15, sY - cellSize / 15, eX + cellSize / 15, eY + cellSize / 15), startAngle, sweepAngle, false, paint);
+//                                break;
 
                             case FADE_GLOBAL:
                                 break;
@@ -495,6 +492,7 @@ public class GameView extends View {
     }
 
     private void makeLayout(int width, int height){
+        int staticCellSize = (5 * width / 9) / 4;
         cellSize = (5 * width / 9) / game.numCellY;
         //padding width
         gridWidth = cellSize * 2 / 3;
@@ -522,30 +520,24 @@ public class GameView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(1000);
 
-        instructionTextSize = textSize * 2.f;
-        subInstructionTextSize = textSize;
+        instructionTextSize = width / 7.f;
+        Log.d("TextSize", String.valueOf(instructionTextSize));
+        Log.d("Width", String.valueOf(width));
+        subInstructionTextSize = instructionTextSize / 2.f;
 
         paint.setTextSize(cellSize);
         cellTextSize = textSize * 1.3f;
-        titleTextSize = textSize / 3;
-        bodyTextSize = (int) (textSize / 1.5);
-        textPaddingSize = (int) (textSize / 3);
+        textPaddingSize = (int) (subInstructionTextSize / 3);
         iconPaddingSize = iconSize / 4;
 
-        paint.setTextSize(titleTextSize);
 
-        int textShiftYAll = centerText();
         //static variables
-        sYInstruction = (int) (gridRect.top - cellSize * 1.5);
-        sYSubInstruction = (int) (gridRect.top - cellSize * 0.5);
+        sYInstruction = (int) (gridRect.top - staticCellSize * 1.5);
+        sYSubInstruction = (int) (gridRect.top - staticCellSize * 0.5);
         sYScore = 0;
-        titleStartYAll = (int) (0);
 
-        paint.setTextSize(bodyTextSize);
-        textShiftYAll = centerText();
-        eYAll = (int) (bodyStartYAll + textShiftYAll + bodyTextSize / 2 + textPaddingSize);
-
-        sYIcons = gridRect.bottom + cellSize / 2;
+        //sYIcons = gridRect.bottom + cellSize / 2;
+        sYIcons = height - iconSize - 10;
         sXNewGame = screenMidX - iconSize / 2;
         sXUndo = 0;
 

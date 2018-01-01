@@ -17,37 +17,57 @@ import static android.content.ContentValues.TAG;
  */
 
 public class MenuView extends View {
+    private static final long SWIPE_ANIMATION_TIME = 100000000;
     //Paint to draw text
     private final Paint paint = new Paint();
+    //Item position
+    public Rect imgDisplayRect = new Rect();
     public Rect playButtonRect = new Rect();
     private Context mContext;
-    private int iconSize;
+    private final MenuActivity mActivity;
+    public int iconSize;
     private int iconPadding;
-    private int sXLeaderBoard;
-    private int sXShare;
-    private int sXSound;
+    public int sXLeftArrow;
+    public int sXRightArrow;
+    public int sYArrow;
     // All icon start on the same line
     private int sYIcon;
     // Background
     private Drawable backgroundRectangle;
     private Bitmap background;
-    private Drawable backgroundPic;
-    private Drawable shareIcon;
+    private Bitmap levelBitmap;
     private Drawable playIcon;
-    private Drawable soundIcon;
+    private Drawable leftArrow;
+    private Drawable rightArrow;
+    // Grid size string
+    private final int NUM_GRID_TYPE = 4;
+    private String[] gridSizeText = new String[NUM_GRID_TYPE];
+    public int gridIndex = 0;
+    // Animation thing
+    private AnimationType swipeAnimationType = AnimationType.NONE;
+    private float elapseTime;
+    private float animationTime = SWIPE_ANIMATION_TIME;
+    // Time
+    private float lastFPSTime;
 
 
-    public MenuView(Context context) {
+    public MenuView(Context context, MenuActivity activity) {
         super(context);
+
+        mActivity = activity;
         mContext = context;
 
         try {
             //Getting assets
             backgroundRectangle = getResources().getDrawable(R.drawable.background_rectangle);
-            backgroundPic = getResources().getDrawable(R.drawable.back_ground_pic);
-            shareIcon = getResources().getDrawable(R.drawable.share);
             playIcon = getResources().getDrawable(R.drawable.ic_play_button);
-            soundIcon = getResources().getDrawable(R.drawable.mute);
+            leftArrow = getResources().getDrawable(R.drawable.ic_left_arrow);
+            rightArrow = getResources().getDrawable(R.drawable.ic_right_arrow);
+            gridSizeText[0] = getResources().getString(R.string._3x3);
+            gridSizeText[1] = getResources().getString(R.string._4x4);
+            gridSizeText[2] = getResources().getString(R.string._5x5);
+            gridSizeText[3] = getResources().getString(R.string._6x6);
+
             this.setBackgroundColor(getResources().getColor(R.color.background));
             Typeface font = Typeface.createFromAsset(getResources().getAssets(), "fonts/ClearSans-Bold.ttf");
             paint.setTypeface(font);
@@ -56,13 +76,22 @@ public class MenuView extends View {
         } catch (Exception e) {
             Log.e(TAG, "Error getting assets?", e);
         }
-        setOnTouchListener(new MenuListener(this, context));
+
+        setOnTouchListener(new MenuListener(this, context, mActivity));
     }
 
     public void onDraw(Canvas canvas) {
         //Reset the transparency of the screen
         canvas.drawBitmap(background, 0, 0, paint);
-
+;
+        //Calculator animation time
+        if(elapseTime <= animationTime){
+            update();
+            invalidate();
+        }else{
+            swipeAnimationType = AnimationType.NONE;
+        }
+        drawLevel(canvas);
     }
 
     @Override
@@ -72,7 +101,45 @@ public class MenuView extends View {
         createBackgroundBitmap(width, height);
 
     }
+    private void drawLevel(Canvas canvas){
 
+        double percentDone;
+        int dX;
+        int prev =  (NUM_GRID_TYPE + gridIndex - 1) % NUM_GRID_TYPE;
+        int next = (gridIndex + 1) % NUM_GRID_TYPE;
+        int textWidth;
+        paint.setColor(getResources().getColor(R.color.text_black));
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(iconSize);
+        switch(swipeAnimationType)
+        {
+            case SWIPE_LEFT:
+                percentDone = elapseTime / animationTime;
+                dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
+                paint.setAlpha((int)((1-percentDone) * 255));
+                canvas.drawText(gridSizeText[prev], getWidth() / 2, sYArrow + iconSize - 10, paint);
+                paint.setAlpha(255);
+                canvas.drawText(gridSizeText[gridIndex], sXRightArrow - iconSize - dX, sYArrow + iconSize - 10, paint);
+                break;
+            case SWIPE_RIGHT:
+                percentDone = elapseTime / animationTime;
+                dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
+                paint.setAlpha((int)((1-percentDone) * 255));
+                canvas.drawText(gridSizeText[next], getWidth() / 2, sYArrow + iconSize - 10, paint);
+                paint.setAlpha(255);
+                canvas.drawText(gridSizeText[gridIndex], sXLeftArrow + iconSize * 2 + dX, sYArrow + iconSize - 10, paint);
+                break;
+            default:
+
+                canvas.drawText(gridSizeText[gridIndex], getWidth() / 2, sYArrow + iconSize - 10, paint);
+
+                //draw image
+                drawDrawable(canvas, getResources().getDrawable(R.drawable.play_button), imgDisplayRect);
+                break;
+
+        }
+
+    }
     private void drawDrawable(Canvas canvas, Drawable draw, int left, int top, int right, int bottom) {
         //Draw to canvas with bound
         draw.setBounds(left, top, right, bottom);
@@ -95,7 +162,8 @@ public class MenuView extends View {
 //        canvas.drawPaint(paint);
         //Draw play, sound and share icon
         drawDrawable(canvas, playIcon, playButtonRect);
-
+        drawDrawable(canvas, leftArrow, sXLeftArrow, sYArrow, sXLeftArrow + iconSize, sYArrow + iconSize);
+        drawDrawable(canvas, rightArrow, sXRightArrow, sYArrow, sXRightArrow + iconSize, sYArrow + iconSize);
     }
 
 
@@ -104,16 +172,50 @@ public class MenuView extends View {
         int screenMidY = height / 2;
         iconSize = width / 10;
         iconPadding = iconSize * 2 / 3;
-        playButtonRect.left = (int) (screenMidX - iconSize * 2);
-        playButtonRect.right = (int) (screenMidX + iconSize * 2);
+        playButtonRect.left = (int) (screenMidX - iconSize * 1.5);
+        playButtonRect.right = (int) (screenMidX + iconSize * 1.5);
 
         int playButtonHeight = iconSize * playIcon.getIntrinsicHeight() / playIcon.getIntrinsicWidth();
-        playButtonRect.top = (int) (screenMidY - playButtonHeight * 2);
-        playButtonRect.bottom = (int) (screenMidY + playButtonHeight * 2);
+        playButtonRect.top = (int) (height * 3 / 4 - playButtonHeight * 1.5);
+        playButtonRect.bottom = (int) (height * 3 / 4 + playButtonHeight * 1.5);
 
         sYIcon = screenMidY + iconSize * 4 + iconPadding;
-        sXShare = screenMidX - iconSize / 2;
-        sXLeaderBoard = sXShare - iconPadding - iconSize;
-        sXSound = sXShare + iconSize + iconPadding;
+        sYArrow = height / 2;
+        sXLeftArrow = width / 8;
+        sXRightArrow = width * 7 / 8 - iconSize;
+        imgDisplayRect.left = width / 6;
+        imgDisplayRect.right = width * 5 / 6;
+        imgDisplayRect.bottom = height / 2 - iconPadding;
+        imgDisplayRect.top = imgDisplayRect.bottom - width * 2 / 3;
+
+        resyncTime();
+    }
+
+    public void resyncTime() {
+        lastFPSTime = System.nanoTime();
+    }
+
+    private void update() {
+        long currentTime = System.nanoTime();
+        elapseTime += currentTime - lastFPSTime;
+        lastFPSTime = currentTime;
+    }
+
+    public void swipeLeft(){
+        swipeAnimationType = AnimationType.SWIPE_LEFT;
+        elapseTime = 0;
+        animationTime = SWIPE_ANIMATION_TIME;
+        gridIndex = (gridIndex + 1) % NUM_GRID_TYPE;
+        resyncTime();
+        invalidate();
+    }
+
+    public void swipeRight(){
+        swipeAnimationType = AnimationType.SWIPE_RIGHT;
+        elapseTime = 0;
+        animationTime = SWIPE_ANIMATION_TIME;
+        gridIndex = (NUM_GRID_TYPE + gridIndex - 1) % NUM_GRID_TYPE;
+        resyncTime();
+        invalidate();
     }
 }

@@ -5,14 +5,21 @@ package cyberse.cloneproject;
  */
 //A cell contain information about animation.
 public class AnimationCell extends Cell {
-    public final int[] extras;
-    private final AnimationType animationType;
-    private final long animationTime;
-    private final long delayTime;
+    public  int[] extras;
+    private AnimationType animationType;
+    private long animationTime;
+    private long delayTime;
     private long timeElapsed;
 
     public AnimationCell(int x, int y, AnimationType animationType, long length, long delay, int[] extras) {
         super(x, y);
+        this.animationType = animationType;
+        animationTime = length;
+        delayTime = delay;
+        this.extras = extras;
+    }
+
+    public void setAnimation(AnimationType animationType, long length, long delay, int[] extras){
         this.animationType = animationType;
         animationTime = length;
         delayTime = delay;
