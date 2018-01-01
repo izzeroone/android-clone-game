@@ -33,15 +33,14 @@ public class MenuView extends View {
     // All icon start on the same line
     private int sYIcon;
     // Background
-    private Drawable backgroundRectangle;
     private Bitmap background;
-    private Bitmap levelBitmap;
     private Drawable playIcon;
     private Drawable leftArrow;
     private Drawable rightArrow;
     // Grid size string
     private final int NUM_GRID_TYPE = 4;
     private String[] gridSizeText = new String[NUM_GRID_TYPE];
+    private Drawable[] gridSizeBitmap = new Drawable[NUM_GRID_TYPE];
     public int gridIndex = 0;
     // Animation thing
     private AnimationType swipeAnimationType = AnimationType.NONE;
@@ -59,7 +58,6 @@ public class MenuView extends View {
 
         try {
             //Getting assets
-            backgroundRectangle = getResources().getDrawable(R.drawable.background_rectangle);
             playIcon = getResources().getDrawable(R.drawable.ic_play_button);
             leftArrow = getResources().getDrawable(R.drawable.ic_left_arrow);
             rightArrow = getResources().getDrawable(R.drawable.ic_right_arrow);
@@ -67,7 +65,10 @@ public class MenuView extends View {
             gridSizeText[1] = getResources().getString(R.string._4x4);
             gridSizeText[2] = getResources().getString(R.string._5x5);
             gridSizeText[3] = getResources().getString(R.string._6x6);
-
+            gridSizeBitmap[0] = getResources().getDrawable(R.drawable.grid_33);
+            gridSizeBitmap[1] = getResources().getDrawable(R.drawable.grid_44);
+            gridSizeBitmap[2] = getResources().getDrawable(R.drawable.grid_55);
+            gridSizeBitmap[3] = getResources().getDrawable(R.drawable.grid_66);
             this.setBackgroundColor(getResources().getColor(R.color.background));
             Typeface font = Typeface.createFromAsset(getResources().getAssets(), "fonts/ClearSans-Bold.ttf");
             paint.setTypeface(font);
@@ -85,7 +86,7 @@ public class MenuView extends View {
         canvas.drawBitmap(background, 0, 0, paint);
 ;
         //Calculator animation time
-        if(elapseTime <= animationTime){
+        if(elapseTime < animationTime){
             update();
             invalidate();
         }else{
@@ -107,7 +108,6 @@ public class MenuView extends View {
         int dX;
         int prev =  (NUM_GRID_TYPE + gridIndex - 1) % NUM_GRID_TYPE;
         int next = (gridIndex + 1) % NUM_GRID_TYPE;
-        int textWidth;
         paint.setColor(getResources().getColor(R.color.text_black));
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(iconSize);
@@ -116,25 +116,37 @@ public class MenuView extends View {
             case SWIPE_LEFT:
                 percentDone = elapseTime / animationTime;
                 dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
+
                 paint.setAlpha((int)((1-percentDone) * 255));
                 canvas.drawText(gridSizeText[prev], getWidth() / 2, sYArrow + iconSize - 10, paint);
+
                 paint.setAlpha(255);
                 canvas.drawText(gridSizeText[gridIndex], sXRightArrow - iconSize - dX, sYArrow + iconSize - 10, paint);
+
+                //avoid over 255
+                gridSizeBitmap[gridIndex].setAlpha((int)(((percentDone) * 255) >= 255 ? 255 : (percentDone) * 255));
+                drawDrawable(canvas, gridSizeBitmap[gridIndex], imgDisplayRect);
                 break;
             case SWIPE_RIGHT:
                 percentDone = elapseTime / animationTime;
                 dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
+
                 paint.setAlpha((int)((1-percentDone) * 255));
                 canvas.drawText(gridSizeText[next], getWidth() / 2, sYArrow + iconSize - 10, paint);
+
                 paint.setAlpha(255);
                 canvas.drawText(gridSizeText[gridIndex], sXLeftArrow + iconSize * 2 + dX, sYArrow + iconSize - 10, paint);
+
+                //avoid over 255
+                gridSizeBitmap[gridIndex].setAlpha((int)(((percentDone) * 255) >= 255 ? 255 : (percentDone) * 255));
+                drawDrawable(canvas, gridSizeBitmap[gridIndex], imgDisplayRect);
                 break;
             default:
 
                 canvas.drawText(gridSizeText[gridIndex], getWidth() / 2, sYArrow + iconSize - 10, paint);
-
+                gridSizeBitmap[gridIndex].setAlpha(255);
+                drawDrawable(canvas, gridSizeBitmap[gridIndex], imgDisplayRect);
                 //draw image
-                drawDrawable(canvas, getResources().getDrawable(R.drawable.play_button), imgDisplayRect);
                 break;
 
         }

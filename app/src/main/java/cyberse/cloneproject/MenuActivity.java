@@ -17,6 +17,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //init Soundpool
+        SoundPoolManager.initialize(this);
+        //play menu sound
+        MediaPlayerManager.getInstance().play(this, R.raw.menu);
         mView = new MenuView(this, this);
         setContentView(mView);
 
@@ -60,4 +64,24 @@ public class MenuActivity extends AppCompatActivity {
         menuIntent.putExtra("time", time);
         this.startActivity(menuIntent);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MediaPlayerManager.getInstance().play(this, R.raw.menu);
+    }
+
+    @Override
+    protected void onDestroy(){
+        MediaPlayerManager.getInstance().stop();
+        super.onDestroy();
+    }
+
+
 }

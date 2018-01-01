@@ -22,10 +22,6 @@ public class GameActivity extends AppCompatActivity {
     private GameView view;
 
 
-    //Sound
-    MediaPlayer menuTheme;
-    MediaPlayer step;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +71,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         };
-        menuTheme = MediaPlayer.create(this,R.raw.music1);
-        menuTheme.start();
+        MediaPlayerManager.getInstance().play(this, R.raw.music1);
         timerThread.start();
         processUIThread.start();
 
@@ -87,24 +82,19 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        step= MediaPlayer.create(this, R.raw.step);
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             //Do nothing
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            step.start();
             view.game.move(2);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            step.start();
             view.game.move(0);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            step.start();
             view.game.move(3);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            step.start();
             view.game.move(1);
             return true;
         }

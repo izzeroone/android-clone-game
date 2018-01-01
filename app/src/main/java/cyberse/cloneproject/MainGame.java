@@ -40,9 +40,6 @@ public class MainGame {
     private long startTime = 0;
     public static int maxTime = 60000;
 
-
-    //Sound
-    MediaPlayer step;
     public MainGame(Context context, GameView view){
         mContext = context;
         mView = view;
@@ -58,6 +55,7 @@ public class MainGame {
     }
 
     public void newGame(){
+        //SoundPoolManager.getInstance().play(mContext, R.raw.step);
         if(grid == null){
             //create new gird
             grid = new Grid(numCellX, numCellY);
@@ -201,6 +199,8 @@ public class MainGame {
     {
         WinStateMaker maker = new WinStateMaker(numCellX );
         grid = maker.makeWinState(grid);
+        score = grid.score;
+        Log.d("Score", String.valueOf(grid.score));
     }
 
     private void clearMergedFrom(){
@@ -256,6 +256,7 @@ public class MainGame {
 
     //moving to direction all cell
     public void move(int direction){
+        SoundPoolManager.getInstance().playSound(R.raw.step);
         //cancel all animation
         animationGrid.cancelAnimations();
         if(!isActive()){
@@ -295,7 +296,7 @@ public class MainGame {
 
     //move spectific cell
     public void move(int xx, int yy, int direction){
-
+        SoundPoolManager.getInstance().playSound(R.raw.step);
         animationGrid.cancelAnimations();
         // 0: up, 1: right, 2: down, 3: left
         if (!isActive()) {
@@ -317,8 +318,6 @@ public class MainGame {
     }
 
     private boolean moveAndCheck(int xx, int yy, int direction){
-        step = MediaPlayer.create(mContext,R.raw.step);
-        step.start();
         boolean moved = false;
         //the the moving vector
         Cell vector = getMovingVector(direction);
