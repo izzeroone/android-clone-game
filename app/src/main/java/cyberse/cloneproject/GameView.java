@@ -521,9 +521,7 @@ public class GameView extends View {
         paint.setTextSize(1000);
 
         instructionTextSize = width / 7.f;
-        Log.d("TextSize", String.valueOf(instructionTextSize));
-        Log.d("Width", String.valueOf(width));
-        subInstructionTextSize = instructionTextSize / 2.f;
+        subInstructionTextSize = instructionTextSize / 2.3f;
 
         paint.setTextSize(cellSize);
         cellTextSize = textSize * 1.3f;
@@ -532,7 +530,7 @@ public class GameView extends View {
 
 
         //static variables
-        sYInstruction = (int) (gridRect.top - staticCellSize * 1.5);
+        sYInstruction = (int) (gridRect.top - staticCellSize * 1.6);
         sYSubInstruction = (int) (gridRect.top - staticCellSize * 0.5);
         sYScore = 0;
 
