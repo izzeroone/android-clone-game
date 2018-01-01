@@ -22,6 +22,10 @@
     <string name="subHint2">May right</string>
     <string name="hint3">Limit</string>
     <string name="subHint3">Check the time</string>
+    <string name="hint4">Use</string>
+    <string name="subHint4">Check button</string>
+    <string name="hint5">Can undo</string>
+    <string name="subHint5">1 step</string>
     <!-- Confirmation dialog-->
     <string name="reset">Reset</string>
     <string name="continue_game">Cancel</string>

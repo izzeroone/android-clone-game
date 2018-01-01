@@ -19,6 +19,7 @@ public class GameView extends View {
 
     //Animation constant
     static final int BASE_ANIMATION_TINE = 100000000;
+    static final long HINT_CHANGE_TINE = 5000;
     private static final String TAG = MenuView.class.getSimpleName();
     private static final float MERGING_ACCELERATION = -0.5f;
     private static final float INITIAL_VELOCITY = (1 - MERGING_ACCELERATION) / 4;
@@ -79,6 +80,7 @@ public class GameView extends View {
     private String subInstruction;
     //Timing
     private long lastFPSTime = System.nanoTime();
+    private long hintTimer = 0;
 
     public GameView(Context context) {
         super(context);
@@ -601,7 +603,14 @@ public class GameView extends View {
     }
 
     public void nextHint(){
-        switch((int)(Math.random() * 3)){
+        if(System.currentTimeMillis() - hintTimer >= HINT_CHANGE_TINE){
+            Log.d(TAG, String.valueOf(System.currentTimeMillis() - hintTimer));
+            hintTimer = System.currentTimeMillis();
+        } else{
+            return;
+        }
+
+        switch((int)(Math.random() * 5)){
             case 0:
                 instruction = getResources().getString(R.string.hint1);
                 subInstruction = getResources().getString(R.string.subHint1);
@@ -613,6 +622,14 @@ public class GameView extends View {
             case 2:
                 instruction = getResources().getString(R.string.hint3);
                 subInstruction = getResources().getString(R.string.subHint3);
+                break;
+            case 3:
+                instruction = getResources().getString(R.string.hint4);
+                subInstruction = getResources().getString(R.string.subHint4);
+                break;
+            case 4:
+                instruction = getResources().getString(R.string.hint5);
+                subInstruction = getResources().getString(R.string.subHint5);
                 break;
         }
     }
