@@ -63,7 +63,9 @@ public class GameActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                view.redrawTimePercent();
+                                if(view != null){
+                                    view.redrawTimePercent();
+                                }
                             }
                         });
                     }
@@ -74,6 +76,7 @@ public class GameActivity extends AppCompatActivity {
         MediaPlayerManager.getInstance().play(this, R.raw.music1);
         timerThread.start();
         processUIThread.start();
+        timerRunnable.onPause();
 
         //set content view
         setContentView(view);
@@ -99,6 +102,11 @@ public class GameActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        view.game.revertUndoState();
     }
 
 

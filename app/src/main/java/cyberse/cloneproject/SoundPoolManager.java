@@ -37,6 +37,10 @@ public class SoundPoolManager {
         soundId.put(R.raw.game_start, sound);
         sound = soundPool.load(context, R.raw.flip, 1);
         soundId.put(R.raw.flip, sound);
+        sound = soundPool.load(context, R.raw.undo, 1);
+        soundId.put(R.raw.undo, sound);
+        sound = soundPool.load(context, R.raw.restart, 1);
+        soundId.put(R.raw.restart, sound);
         // load other sound if you like
     }
 

@@ -3,6 +3,7 @@ package cyberse.cloneproject;
 //Our game
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -55,7 +56,6 @@ public class MainGame {
     }
 
     public void newGame(){
-        //SoundPoolManager.getInstance().play(mContext, R.raw.step);
         if(grid == null){
             //create new gird
             grid = new Grid(numCellX, numCellY);
@@ -118,6 +118,8 @@ public class MainGame {
             //add spawn animation to all cell
             animationGrid.cancelAnimations();
             spawnGridAnimation();
+            //get the hint
+            mView.nextHint();
             //play sound
             SoundPoolManager.getInstance().playSound(R.raw.game_start);
             //refresh view
@@ -135,6 +137,9 @@ public class MainGame {
         percent = 1.0f * timer / maxTime;
         if (timer > maxTime) {
             gameState = GameState.LOST;
+            MediaPlayerManager.getInstance().pause();
+            SoundPoolManager.getInstance().playSound(R.raw.you_lost);
+            MediaPlayerManager.getInstance().resume();
             endGame();
         }
 
@@ -238,6 +243,7 @@ public class MainGame {
     }
 
     public void revertUndoState(){
+        SoundPoolManager.getInstance().playSound(R.raw.undo);
         if(!isActive()){
             return;
         }
@@ -298,6 +304,7 @@ public class MainGame {
 
     //move spectific cell
     public void move(int xx, int yy, int direction){
+        mView.nextHint();
         SoundPoolManager.getInstance().playSound(R.raw.step);
         animationGrid.cancelAnimations();
         // 0: up, 1: right, 2: down, 3: left
@@ -491,6 +498,11 @@ public class MainGame {
     private void endGame() {
         GameActivity.timerRunnable.onPause();
         animationGrid.startAnimation(-1, -1, AnimationType.FADE_GLOBAL, NOTIFICATION_ANIMATION_TIME, NOTIFICATION_DELAY_TIME, null);
+    }
+
+    public void finish(){
+        if(mContext instanceof Activity){
+            ((Activity)mContext).finish(); }
     }
 
 

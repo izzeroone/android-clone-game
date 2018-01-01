@@ -34,22 +34,22 @@ public class MenuActivity extends AppCompatActivity {
             case 0:
                 numCellX = 3;
                 numCellY = 3;
-                time = 60000;
+                time = 20000;
                 break;
             case 1:
                 numCellX = 4;
                 numCellY = 4;
-                time = 90000;
+                time = 40000;
                 break;
             case 2:
                 numCellX = 5;
                 numCellY = 5;
-                time = 120000;
+                time = 80000;
                 break;
             case 3:
                 numCellX = 6;
                 numCellY = 6;
-                time = 150000;
+                time = 100000;
                 break;
             default:
                 numCellX = 3;

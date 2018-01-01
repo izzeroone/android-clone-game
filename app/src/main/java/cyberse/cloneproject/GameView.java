@@ -379,6 +379,9 @@ public class GameView extends View {
 //                                break;
 
                             case FADE_GLOBAL:
+                                bitmapCell[index].setAlpha((int)(((aCell.getPercentageDone()) * 255) >= 255 ? 255 : (aCell.getPercentageDone()) * 255));
+                                bitmapCell[index].setBounds(sX, sY, eX, eY);
+                                bitmapCell[index].draw(canvas);
                                 break;
                         }
                         animated = true;
@@ -422,8 +425,8 @@ public class GameView extends View {
                 restartButtonEnabled = true;
                 break;
             default:
-                instruction = getResources().getString(R.string.brain);
-                subInstruction = getResources().getString(R.string.use_your);
+//                instruction = getResources().getString(R.string.hint1);
+//                subInstruction = getResources().getString(R.string.subHint1);
                 paint.setColor(getResources().getColor(R.color.text_cyan));
                 drawInstructions(canvas);
                 drawSubInstructions(canvas);
@@ -595,6 +598,23 @@ public class GameView extends View {
             }
         }
         return null;
+    }
+
+    public void nextHint(){
+        switch((int)(Math.random() * 3)){
+            case 0:
+                instruction = getResources().getString(R.string.hint1);
+                subInstruction = getResources().getString(R.string.subHint1);
+                break;
+            case 1:
+                instruction = getResources().getString(R.string.hint2);
+                subInstruction = getResources().getString(R.string.subHint2);
+                break;
+            case 2:
+                instruction = getResources().getString(R.string.hint3);
+                subInstruction = getResources().getString(R.string.subHint3);
+                break;
+        }
     }
 
 

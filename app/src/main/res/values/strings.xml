@@ -9,14 +9,19 @@
     <string name="you_win">You Win!</string>
     <string name="game_over">Game Over!</string>
     <string name="go_on">Tap to Continue</string>
-    <string name="use_your">Use your</string>
-    <string name="brain">Brain</string>
     <string name="ready">Ready</string>
     <string name="show">Make this!</string>
     <string name="_3x3">3x3</string>
     <string name="_4x4">4x4</string>
     <string name="_5x5">5x5</string>
     <string name="_6x6">6x6</string>
+    <!-- Confirmation dialog-->
+    <string name="hint1">1+1=2</string>
+    <string name="subHint1">2+2=3 &amp; ..</string>
+    <string name="hint2">Same score</string>
+    <string name="subHint2">May right</string>
+    <string name="hint3">Limit</string>
+    <string name="subHint3">Check the time</string>
     <!-- Confirmation dialog-->
     <string name="reset">Reset</string>
     <string name="continue_game">Cancel</string>

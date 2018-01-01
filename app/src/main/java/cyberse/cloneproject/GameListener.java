@@ -143,6 +143,7 @@ public class GameListener implements View.OnTouchListener {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             mView.game.newGame();
+                                            SoundPoolManager.getInstance().playSound(R.raw.restart);
                                         }
                                     })
                                     .setNegativeButton(R.string.continue_game, null)
@@ -158,13 +159,17 @@ public class GameListener implements View.OnTouchListener {
                     } else if (isTap(2) && rectanglePressed(mView.checkRect)) {
                         mView.game.checkWinState();
                     } else if (isTap(2) && inRange(mView.gridRect.left, x, mView.gridRect.right)
-                            && inRange(mView.gridRect.top, x, mView.gridRect.bottom) && mView.restartButtonEnabled) {
-                        if(mView.game.gameState == GameState.READY){
-                            mView.game.gameStart();
-                        } else if(mView.game.gameState == GameState.WIN){
-                            mView.game.newGame();
-                        }
-
+                            && inRange(mView.gridRect.top, x, mView.gridRect.bottom)) {
+                      switch (mView.game.gameState){
+                          case READY:
+                              mView.game.gameStart();
+                              break;
+                          case WIN: case LOST:
+                              mView.game.newGame();
+                              break;
+                      }
+                    } else if (iconPressed(mView.sXHome, mView.sYHome)) {
+                        mView.game.finish();
                     }
                 }
         }
