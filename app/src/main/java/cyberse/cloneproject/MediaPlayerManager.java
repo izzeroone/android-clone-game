@@ -49,7 +49,8 @@ public class MediaPlayerManager {
         mediaPlayer = MediaPlayer.create(context.getApplicationContext(), resId);
         mediaPlayer.setOnCompletionListener(completionListener);
         mediaPlayer.setOnErrorListener(errorListener);
-        mediaPlayer.start();
         mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
     }
 }
