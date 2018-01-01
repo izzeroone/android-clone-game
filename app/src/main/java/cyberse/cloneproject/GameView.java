@@ -43,6 +43,9 @@ public class GameView extends View {
     public int sXUndo;
     //check button
     public Rectangle checkRect = new Rectangle();
+    //Home button
+    public int sXHome;
+    public int sYHome;
     //timer
     public Rectangle percentRect = new Rectangle();
     //Misc
@@ -226,6 +229,18 @@ public class GameView extends View {
                 sYIcons + iconPaddingSize,
                 sXUndo + iconSize - iconPaddingSize,
                 sYIcons + iconSize - iconPaddingSize
+        );
+    }
+
+    private void drawHomeButton(Canvas canvas) {
+
+
+        drawDrawable(canvas,
+                getResources().getDrawable(R.drawable.ic_action_home),
+                sXHome + iconPaddingSize / 2,
+                sYHome + iconPaddingSize / 2,
+                sXHome + iconSize - iconPaddingSize / 2,
+                sYHome + iconSize - iconPaddingSize / 2
         );
     }
 
@@ -442,6 +457,7 @@ public class GameView extends View {
         drawNewGameButton(canvas, false);
         drawUndoButton(canvas);
         drawCheckButton(canvas);
+        drawHomeButton(canvas);
 
     }
 
@@ -538,6 +554,8 @@ public class GameView extends View {
         sYIcons = height - iconSize - 10;
         sXNewGame = screenMidX - iconSize / 2;
         sXUndo = 0;
+        sXHome = 0;
+        sYHome = 0;
 
         percentRect.left = gridRect.left;
         percentRect.right = gridRect.right;
