@@ -16,13 +16,14 @@ public class WinStateMaker {
     }
 
     public Grid makeWinState(Grid startGrid) {
-        PriorityQueue<Grid> queue = new PriorityQueue<Grid>(1000, new Comparator<Grid>() {
+        PriorityQueue<Grid> queue = new PriorityQueue<Grid>(100, new Comparator<Grid>() {
             @Override
             public int compare(Grid grid, Grid t1) {
                 return grid.getNumberOccupiedCells() - t1.getNumberOccupiedCells();
             }
         });
 
+        startGrid.score = 0;
         queue.add(startGrid);
         Grid min = startGrid;
 

@@ -118,11 +118,13 @@ public class MainGame {
             //add spawn animation to all cell
             animationGrid.cancelAnimations();
             spawnGridAnimation();
-
+            //play sound
+            SoundPoolManager.getInstance().playSound(R.raw.game_start);
             //refresh view
             mView.refreshLastTime = true;
             mView.resyncTime();
             mView.invalidate();
+
         } else{
             //the game already start, make same notification
         }
@@ -197,7 +199,7 @@ public class MainGame {
 
     private void makeWinningState()
     {
-        WinStateMaker maker = new WinStateMaker(numCellX );
+        WinStateMaker maker = new WinStateMaker(numCellX);
         grid = maker.makeWinState(grid);
         score = grid.score;
         Log.d("Score", String.valueOf(grid.score));
@@ -423,6 +425,9 @@ public class MainGame {
     private void checkLose() {
         if(grid.countOccupiedCell() < winGrid.countOccupiedCell() - 1){
             gameState = GameState.LOST;
+            MediaPlayerManager.getInstance().pause();
+            SoundPoolManager.getInstance().playSound(R.raw.you_lost);
+            MediaPlayerManager.getInstance().resume();
             endGame();
         }
     }
@@ -430,6 +435,9 @@ public class MainGame {
     private  void checkWin(){
         if(isWin()){
             gameState = GameState.WIN;
+            MediaPlayerManager.getInstance().pause();
+            SoundPoolManager.getInstance().playSound(R.raw.you_win);
+            MediaPlayerManager.getInstance().resume();
             endGame();
         }
     }

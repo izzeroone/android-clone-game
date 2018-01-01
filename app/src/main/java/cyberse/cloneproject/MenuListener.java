@@ -80,10 +80,10 @@ public class MenuListener implements View.OnTouchListener {
                         //Horizontal
                         if (((dx >= SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX >= MOVE_THRESHOLD)) {
                             moved = true;
-                            mView.swipeLeft();
+                            mView.swipeRight();
                         } else if (((dx <= -SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX <= -MOVE_THRESHOLD)) {
                             moved = true;
-                            mView.swipeRight();
+                            mView.swipeLeft();
                         }
                         if (moved) {
                             hasMove = true;

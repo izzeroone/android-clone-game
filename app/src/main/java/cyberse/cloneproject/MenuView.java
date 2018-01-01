@@ -199,7 +199,6 @@ public class MenuView extends View {
         imgDisplayRect.right = width * 5 / 6;
         imgDisplayRect.bottom = height / 2 - iconPadding;
         imgDisplayRect.top = imgDisplayRect.bottom - width * 2 / 3;
-
         resyncTime();
     }
 
@@ -218,6 +217,8 @@ public class MenuView extends View {
         elapseTime = 0;
         animationTime = SWIPE_ANIMATION_TIME;
         gridIndex = (gridIndex + 1) % NUM_GRID_TYPE;
+        //play sound
+        SoundPoolManager.getInstance().playSound(R.raw.flip);
         resyncTime();
         invalidate();
     }
@@ -227,6 +228,8 @@ public class MenuView extends View {
         elapseTime = 0;
         animationTime = SWIPE_ANIMATION_TIME;
         gridIndex = (NUM_GRID_TYPE + gridIndex - 1) % NUM_GRID_TYPE;
+        //play sound
+        SoundPoolManager.getInstance().playSound(R.raw.flip);
         resyncTime();
         invalidate();
     }

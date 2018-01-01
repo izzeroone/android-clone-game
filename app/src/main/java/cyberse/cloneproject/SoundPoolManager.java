@@ -29,6 +29,14 @@ public class SoundPoolManager {
         soundId.put(R.raw.correct, sound);
         sound = soundPool.load(context, R.raw.wrong, 1);
         soundId.put(R.raw.wrong, sound);
+        sound = soundPool.load(context, R.raw.you_win, 1);
+        soundId.put(R.raw.you_win, sound);
+        sound = soundPool.load(context, R.raw.you_lost, 1);
+        soundId.put(R.raw.you_lost, sound);
+        sound = soundPool.load(context, R.raw.game_start, 1);
+        soundId.put(R.raw.game_start, sound);
+        sound = soundPool.load(context, R.raw.flip, 1);
+        soundId.put(R.raw.flip, sound);
         // load other sound if you like
     }
 

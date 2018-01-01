@@ -26,6 +26,13 @@ public class MediaPlayerManager {
         }
     }
 
+    public void pause(){
+        mediaPlayer.pause();
+    }
+
+    public void resume(){
+        mediaPlayer.start();
+    }
     public void play(Context context, int resId) {
         play(context, resId, null, null);
     }

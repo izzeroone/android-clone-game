@@ -467,19 +467,19 @@ public class GameView extends View {
     private int[] getCellRectangleIds() {
         int[] cellRectangleIds = new int[numCellTypes];
         cellRectangleIds[0] = R.drawable.cell_rectangle;
-        cellRectangleIds[1] = R.drawable.cell_rectangle_2;
-        cellRectangleIds[2] = R.drawable.cell_rectangle_4;
-        cellRectangleIds[3] = R.drawable.cell_rectangle_8;
-        cellRectangleIds[4] = R.drawable.cell_rectangle_16;
-        cellRectangleIds[5] = R.drawable.cell_rectangle_32;
-        cellRectangleIds[6] = R.drawable.cell_rectangle_64;
-        cellRectangleIds[7] = R.drawable.cell_rectangle_128;
-        cellRectangleIds[8] = R.drawable.cell_rectangle_256;
-        cellRectangleIds[9] = R.drawable.cell_rectangle_512;
-        cellRectangleIds[10] = R.drawable.cell_rectangle_1024;
-        cellRectangleIds[11] = R.drawable.cell_rectangle_2048;
+        cellRectangleIds[1] = R.drawable.cell_circle_1;
+        cellRectangleIds[2] = R.drawable.cell_circle_2;
+        cellRectangleIds[3] = R.drawable.cell_circle_3;
+        cellRectangleIds[4] = R.drawable.cell_circle_4;
+        cellRectangleIds[5] = R.drawable.cell_circle_5;
+        cellRectangleIds[6] = R.drawable.cell_circle_6;
+        cellRectangleIds[7] = R.drawable.cell_circle_7;
+        cellRectangleIds[8] = R.drawable.cell_circle_8;
+        cellRectangleIds[9] = R.drawable.cell_circle_9;
+        cellRectangleIds[10] = R.drawable.cell_circle_10;
+        cellRectangleIds[11] = R.drawable.cell_circle_11;
         for (int xx = 12; xx < cellRectangleIds.length; xx++) {
-            cellRectangleIds[xx] = R.drawable.cell_rectangle_4096;
+            cellRectangleIds[xx] = R.drawable.cell_circle_12;
         }
         return cellRectangleIds;
     }

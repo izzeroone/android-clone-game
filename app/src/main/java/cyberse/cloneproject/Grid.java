@@ -13,7 +13,7 @@ public class Grid {
     public final Tile[][] undoField;
     //to save current stage then assign to undoField to avoid mess thing up
     private final Tile[][] bufferField;
-    public int score;
+    public int score = 0;
 
     public Grid(int sizeX, int sizeY) {
         field = new Tile[sizeX][sizeY];
@@ -152,7 +152,7 @@ public class Grid {
                 insertTile(merge);
                 removeTile(tile);
                 tile.updatePosition(positions[1]);
-                score += merge.getValue();
+                score += tile.getValue() + 1;
 
             } else {
                 //just move the cell
