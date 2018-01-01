@@ -22,8 +22,13 @@ public class SoundPoolManager {
     }
 
     public void loadSound(Context context){
-        int sound = soundPool.load(context, R.raw.step, 1);
+        int sound;
+        sound = soundPool.load(context, R.raw.step, 1);
         soundId.put(R.raw.step, sound);
+        sound = soundPool.load(context, R.raw.correct, 1);
+        soundId.put(R.raw.correct, sound);
+        sound = soundPool.load(context, R.raw.wrong, 1);
+        soundId.put(R.raw.wrong, sound);
         // load other sound if you like
     }
 

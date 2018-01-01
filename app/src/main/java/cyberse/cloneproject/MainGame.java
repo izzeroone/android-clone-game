@@ -453,12 +453,14 @@ public class MainGame {
     }
 
     public void checkWinState(){
+        boolean anyCorrect = false;
         for(int xx = 0; xx < grid.field.length; xx++)
         {
             for(int yy = 0; yy < grid.field[0].length; yy++)
             {
                 if(grid.field[xx][yy] != null  ){
                     if(winGrid.field[xx][yy] != null && grid.field[xx][yy].getValue() == winGrid.field[xx][yy].getValue()){
+                        anyCorrect = true;
                         animationGrid.startAnimation(xx, yy, AnimationType.CHECK_RIGHT_CIRCLE,
                                 NOTIFICATION_ANIMATION_TIME, 0, null);
                     } else {
@@ -467,6 +469,11 @@ public class MainGame {
                     }
                 }
             }
+        }
+        if(anyCorrect){
+            SoundPoolManager.getInstance().playSound(R.raw.correct);
+        } else{
+            SoundPoolManager.getInstance().playSound(R.raw.wrong);
         }
 
         mView.resyncTime();
