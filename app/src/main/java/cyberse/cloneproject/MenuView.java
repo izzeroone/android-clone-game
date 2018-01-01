@@ -17,7 +17,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class MenuView extends View {
-    private static final long SWIPE_ANIMATION_TIME = 100000000;
+    private static final long SWIPE_ANIMATION_TIME = 100;
     //Paint to draw text
     private final Paint paint = new Paint();
     //Item position
@@ -30,8 +30,6 @@ public class MenuView extends View {
     public int sXLeftArrow;
     public int sXRightArrow;
     public int sYArrow;
-    // All icon start on the same line
-    private int sYIcon;
     // Background
     private Bitmap background;
     private Drawable playIcon;
@@ -44,10 +42,10 @@ public class MenuView extends View {
     public int gridIndex = 0;
     // Animation thing
     private AnimationType swipeAnimationType = AnimationType.NONE;
-    private float elapseTime;
-    private float animationTime = SWIPE_ANIMATION_TIME;
+    private long elapseTime;
+    private long animationTime = SWIPE_ANIMATION_TIME;
     // Time
-    private float lastFPSTime;
+    private long lastFPSTime;
 
 
     public MenuView(Context context, MenuActivity activity) {
@@ -104,7 +102,7 @@ public class MenuView extends View {
     }
     private void drawLevel(Canvas canvas){
 
-        double percentDone;
+        double percentDone = Math.max(0, 1.0 * elapseTime / animationTime);
         int dX;
         int prev =  (NUM_GRID_TYPE + gridIndex - 1) % NUM_GRID_TYPE;
         int next = (gridIndex + 1) % NUM_GRID_TYPE;
@@ -114,7 +112,6 @@ public class MenuView extends View {
         switch(swipeAnimationType)
         {
             case SWIPE_LEFT:
-                percentDone = elapseTime / animationTime;
                 dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
 
                 paint.setAlpha((int)((1-percentDone) * 255));
@@ -128,7 +125,6 @@ public class MenuView extends View {
                 drawDrawable(canvas, gridSizeBitmap[gridIndex], imgDisplayRect);
                 break;
             case SWIPE_RIGHT:
-                percentDone = elapseTime / animationTime;
                 dX = (int) ((getWidth() / 2 - iconSize * 2 - sXLeftArrow) * (percentDone) * 1.0);
 
                 paint.setAlpha((int)((1-percentDone) * 255));
@@ -191,7 +187,6 @@ public class MenuView extends View {
         playButtonRect.top = (int) (height * 3 / 4 - playButtonHeight * 1.5);
         playButtonRect.bottom = (int) (height * 3 / 4 + playButtonHeight * 1.5);
 
-        sYIcon = screenMidY + iconSize * 4 + iconPadding;
         sYArrow = height / 2;
         sXLeftArrow = width / 8;
         sXRightArrow = width * 7 / 8 - iconSize;
@@ -203,11 +198,11 @@ public class MenuView extends View {
     }
 
     public void resyncTime() {
-        lastFPSTime = System.nanoTime();
+        lastFPSTime = System.currentTimeMillis();
     }
 
     private void update() {
-        long currentTime = System.nanoTime();
+        long currentTime = System.currentTimeMillis();
         elapseTime += currentTime - lastFPSTime;
         lastFPSTime = currentTime;
     }

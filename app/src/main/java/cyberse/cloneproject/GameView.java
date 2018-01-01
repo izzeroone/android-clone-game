@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class GameView extends View {
 
     //Animation constant
-    static final int BASE_ANIMATION_TINE = 100000000;
+    static final int BASE_ANIMATION_TINE = 100;
     static final long HINT_CHANGE_TINE = 5000;
     private static final String TAG = MenuView.class.getSimpleName();
     private static final float MERGING_ACCELERATION = -0.5f;
@@ -79,7 +79,7 @@ public class GameView extends View {
     private String instruction;
     private String subInstruction;
     //Timing
-    private long lastFPSTime = System.nanoTime();
+    private long lastFPSTime = System.currentTimeMillis();
     private long hintTimer = 0;
 
     public GameView(Context context) {
@@ -507,7 +507,7 @@ public class GameView extends View {
 
 
     private void update() {
-        long currentTime = System.nanoTime();
+        long currentTime = System.currentTimeMillis();
         game.animationGrid.updateAll(currentTime - lastFPSTime);
         lastFPSTime = currentTime;
     }
@@ -579,7 +579,7 @@ public class GameView extends View {
     }
 
     public void resyncTime() {
-        lastFPSTime = System.nanoTime();
+        lastFPSTime = System.currentTimeMillis();
     }
 
     public int[] clickedCell(int x, int y) {
@@ -604,7 +604,6 @@ public class GameView extends View {
 
     public void nextHint(){
         if(System.currentTimeMillis() - hintTimer >= HINT_CHANGE_TINE){
-            Log.d(TAG, String.valueOf(System.currentTimeMillis() - hintTimer));
             hintTimer = System.currentTimeMillis();
         } else{
             return;
