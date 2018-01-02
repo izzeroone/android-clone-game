@@ -83,5 +83,11 @@ public class MenuActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onPause(){
+        MediaPlayerManager.getInstance().stop();
+        super.onPause();
+    }
+
 
 }

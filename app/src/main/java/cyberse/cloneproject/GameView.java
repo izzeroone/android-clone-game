@@ -165,7 +165,7 @@ public class GameView extends View {
         //Drawing the score text: Ver 2
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(getResources().getColor(R.color.text_black));
-        paint.setTextSize(subInstructionTextSize);
+        paint.setTextSize(instructionTextSize / 1.5f);
         canvas.drawText(String.valueOf(game.score), (gridRect.left + gridRect.right) / 2, sYScore + paint.getTextSize(), paint);
     }
 
@@ -532,7 +532,6 @@ public class GameView extends View {
         gridRect.top = (int) (boardMidY - (cellSize + gridWidth) * halfNumSquaresY - gridWidth / 2);
         gridRect.bottom = (int) (boardMidY + (cellSize + gridWidth) * halfNumSquaresY + gridWidth / 2);
 
-        float widthWithPadding = gridRect.right - gridRect.left;
 
         // Text Dimensions
         paint.setTextSize(cellSize);
@@ -553,7 +552,7 @@ public class GameView extends View {
         //static variables
         sYInstruction = (int) (gridRect.top - staticCellSize * 1.6);
         sYSubInstruction = (int) (gridRect.top - staticCellSize * 0.5);
-        sYScore = 0;
+        sYScore = sXHome + iconPaddingSize / 2;
 
         //sYIcons = gridRect.bottom + cellSize / 2;
         sYIcons = height - iconSize - 10;

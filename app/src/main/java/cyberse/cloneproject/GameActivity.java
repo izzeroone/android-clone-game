@@ -109,5 +109,30 @@ public class GameActivity extends AppCompatActivity {
         view.game.revertUndoState();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MediaPlayerManager.getInstance().play(this, R.raw.music1);
+    }
+
+    @Override
+    protected void onDestroy(){
+        MediaPlayerManager.getInstance().stop();
+        super.onDestroy();
+    }
+
+
+    @Override
+    protected void onPause(){
+        MediaPlayerManager.getInstance().stop();
+        super.onPause();
+    }
+
 
 }
