@@ -21,6 +21,7 @@ public class MediaPlayerManager {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
+            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -50,6 +51,7 @@ public class MediaPlayerManager {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
+            mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
         }

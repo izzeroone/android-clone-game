@@ -17,8 +17,6 @@ public class GameActivity extends AppCompatActivity {
     private static final String UNDO_SCORE = "undo score";
     private static final String GAME_STATE = "game state";
     private static final String UNDO_GAME_STATE = "undo game state";
-    public static Thread timerThread;
-    public static TimerUpdateRunnable timerRunnable;
     private GameView view;
 
 
@@ -47,37 +45,7 @@ public class GameActivity extends AppCompatActivity {
         view.game.newGame();
 
 
-        //check if have state and load
-
-        //create runnable
-        timerRunnable = new TimerUpdateRunnable(view.game);
-        //create timer thread to update timer
-        timerThread = new Thread(timerRunnable);
-        //create thread to update the view
-        Thread processUIThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(100);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(view != null){
-                                    view.redrawTimePercent();
-                                }
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
         MediaPlayerManager.getInstance().play(this, R.raw.music1);
-        timerThread.start();
-        processUIThread.start();
-        timerRunnable.onPause();
-
         //set content view
         setContentView(view);
 
@@ -119,12 +87,6 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         MediaPlayerManager.getInstance().play(this, R.raw.music1);
-    }
-
-    @Override
-    protected void onDestroy(){
-        MediaPlayerManager.getInstance().stop();
-        super.onDestroy();
     }
 
 

@@ -19,7 +19,6 @@ public class MenuListener implements View.OnTouchListener {
     private static final int RESET_STARTING = 10;
     private final MenuView mView;
     private final Context mContext;
-    private final MenuActivity mActivity;
     private float x;
     private float y;
     private float previousX;
@@ -30,11 +29,10 @@ public class MenuListener implements View.OnTouchListener {
     private boolean beganOnIcon = false;
     private boolean beganOnGrid = false;
 
-    public MenuListener(MenuView view, Context context, MenuActivity activity) {
+    public MenuListener(MenuView view, Context context) {
         super();
         this.mView = view;
         this.mContext = context;
-        this.mActivity = activity;
     }
 
     public boolean onTouch(View view, MotionEvent event) {
@@ -60,7 +58,9 @@ public class MenuListener implements View.OnTouchListener {
                 y = event.getY();
                 if (beganOnIcon) {
                     if (rectanglePressed(mView.playButtonRect)) {
-                        mActivity.startGame();
+                        if(mContext instanceof MenuActivity){
+                            ((MenuActivity)mContext).startGame();
+                        }
                     }
                     if(iconPressed(mView.sXLeftArrow, mView.sYArrow)){
                         mView.swipeLeft();

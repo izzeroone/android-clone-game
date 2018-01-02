@@ -90,11 +90,14 @@ public class MainGame {
         //show the winGrid
         gameState = GameState.READY;
         //reset time
-        if (GameActivity.timerRunnable != null)
-            GameActivity.timerRunnable.onPause();
+//        if (GameActivity.timerRunnable != null)
+//            GameActivity.timerRunnable.onPause();
         //cancel all animation and add spawn animation
         animationGrid.cancelAnimations();
         spawnGridAnimation();
+        //reset timer and percent
+        mView.hintTimer = 0;
+        percent = 0;
         mView.refreshLastTime = true;
         mView.resyncTime();
         mView.invalidate();
@@ -114,7 +117,8 @@ public class MainGame {
             timer = 0;
             //starting counting time
             startTime = System.currentTimeMillis();
-            GameActivity.timerRunnable.onResume();
+            percent = 0;
+            //GameActivity.timerRunnable.onResume();
             //add spawn animation to all cell
             animationGrid.cancelAnimations();
             spawnGridAnimation();
@@ -133,6 +137,9 @@ public class MainGame {
     }
 
     public void update() {
+        if(gameState != GameState.NORMAL)
+            return;
+
         timer = System.currentTimeMillis() - startTime;
         percent = 1.0f * timer / maxTime;
         if (timer > maxTime) {
@@ -143,7 +150,7 @@ public class MainGame {
             endGame();
         }
 
-        //mView.redrawTimePercent();
+        mView.redrawTimePercent();
     }
 
     private void addStartTiles(){
@@ -496,7 +503,7 @@ public class MainGame {
     }
 
     private void endGame() {
-        GameActivity.timerRunnable.onPause();
+        //GameActivity.timerRunnable.onPause();
         animationGrid.startAnimation(-1, -1, AnimationType.FADE_GLOBAL, NOTIFICATION_ANIMATION_TIME, NOTIFICATION_DELAY_TIME, null);
     }
 

@@ -24,7 +24,6 @@ public class MenuView extends View {
     public Rect imgDisplayRect = new Rect();
     public Rect playButtonRect = new Rect();
     private Context mContext;
-    private final MenuActivity mActivity;
     public int iconSize;
     private int iconPadding;
     public int sXLeftArrow;
@@ -48,10 +47,9 @@ public class MenuView extends View {
     private long lastFPSTime;
 
 
-    public MenuView(Context context, MenuActivity activity) {
+    public MenuView(Context context) {
         super(context);
 
-        mActivity = activity;
         mContext = context;
 
         try {
@@ -76,7 +74,7 @@ public class MenuView extends View {
             Log.e(TAG, "Error getting assets?", e);
         }
 
-        setOnTouchListener(new MenuListener(this, context, mActivity));
+        setOnTouchListener(new MenuListener(this, context));
     }
 
     public void onDraw(Canvas canvas) {

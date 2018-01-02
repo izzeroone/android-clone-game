@@ -80,7 +80,7 @@ public class GameView extends View {
     private String subInstruction;
     //Timing
     private long lastFPSTime = System.currentTimeMillis();
-    private long hintTimer = 0;
+    public long hintTimer = 0;
 
     public GameView(Context context) {
         super(context);
@@ -133,7 +133,14 @@ public class GameView extends View {
             invalidate();
             refreshLastTime = false;
         }
+
+        if(game.percent <= 1) {
+            game.update();
+            redrawTimePercent();
+        }
+
     }
+
 
     @Override
     protected void onSizeChanged(int width, int height, int oldW, int oldH) {

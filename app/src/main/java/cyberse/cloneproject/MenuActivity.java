@@ -21,7 +21,7 @@ public class MenuActivity extends AppCompatActivity {
         SoundPoolManager.initialize(this);
         //play menu sound
         MediaPlayerManager.getInstance().play(this, R.raw.menu);
-        mView = new MenuView(this, this);
+        mView = new MenuView(this);
         setContentView(mView);
 
 
