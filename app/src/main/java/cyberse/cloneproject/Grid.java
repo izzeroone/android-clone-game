@@ -138,7 +138,7 @@ public class Grid {
         if (tile != null) {
             //find the farthest cell in the direction
             Cell[] positions = findFarthestPosition(cell, vector);
-            //get the second cell because the first one is itself
+            //get the second cell because the first one is cell before
             Tile next = getCellContent(positions[1]);
             //whether they have the same value and not merge with other cell
             if (next != null && next.getValue() == tile.getValue() && next.getMergedFrom() == null) {
