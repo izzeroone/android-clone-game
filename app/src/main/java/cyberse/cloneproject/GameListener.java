@@ -10,15 +10,19 @@ public class GameListener implements View.OnTouchListener {
     private static final int SWIPE_MIN_DISTANCE = 0;
     private static final int SWIPE_THRESHOLD_VELOCITY = 10;
     private static final int MOVE_THRESHOLD = 100;
+    private static final int RESET_STARTING = 10;
     private static final long LONG_PRESS_TIME = 300; // 1,5s
     private final GameView mView;
     private float x;
     private float y;
+    private float lastDx;
+    private float lastDy;
     private float previousX;
     private float previousY;
     private float startingX;
     private float startingY;
     private int previousDirection = 1;
+    private int veryLastDirection = 1;
     // Whether or not we have made a move, i.e. the blocks shifted or tried to shift.
     private boolean hasMoved = false;
     // Whether or not we began the press on an icon. This is to disable swipes if the user began
@@ -43,6 +47,8 @@ public class GameListener implements View.OnTouchListener {
                 startingY = y;
                 previousX = x;
                 previousY = y;
+                lastDx = 0;
+                lastDy = 0;
                 hasMoved = false;
                 beganOnIcon = iconPressed(mView.sXNewGame, mView.sYIcons)
                         || iconPressed(mView.sXUndo, mView.sYIcons)
@@ -57,30 +63,54 @@ public class GameListener implements View.OnTouchListener {
                 y = event.getY();
                 if (mView.game.isActive() && !beganOnIcon) {
                     float dx = x - previousX;
+                    if (Math.abs(lastDx + dx) < Math.abs(lastDx) + Math.abs(dx) && Math.abs(dx) > RESET_STARTING
+                            && Math.abs(x - startingX) > SWIPE_MIN_DISTANCE) {
+                        startingX = x;
+                        startingY = y;
+                        lastDx = dx;
+                        previousDirection = veryLastDirection;
+                    }
+                    if (lastDx == 0) {
+                        lastDx = dx;
+                    }
                     float dy = y - previousY;
+                    if (Math.abs(lastDy + dy) < Math.abs(lastDy) + Math.abs(dy) && Math.abs(dy) > RESET_STARTING
+                            && Math.abs(y - startingY) > SWIPE_MIN_DISTANCE) {
+                        startingX = x;
+                        startingY = y;
+                        lastDy = dy;
+                        previousDirection = veryLastDirection;
+                    }
+                    if (lastDy == 0) {
+                        lastDy = dy;
+                    }
                     int position[] = mView.clickedCell((int)previousX, (int)previousY);
                     if (pathMoved() > SWIPE_MIN_DISTANCE * SWIPE_MIN_DISTANCE && !hasMoved && position != null) {
                         int xx = position[0];
                         int yy = position[1];
                         boolean moved = false;
                         //Vertical
-                        if (((dy >= SWIPE_THRESHOLD_VELOCITY && Math.abs(dy) >= Math.abs(dx)) || y - startingY >= MOVE_THRESHOLD)) {
+                        if (((dy >= SWIPE_THRESHOLD_VELOCITY && Math.abs(dy) >= Math.abs(dx)) || y - startingY >= MOVE_THRESHOLD) && previousDirection % 2 != 0) {
                             moved = true;
                             previousDirection = previousDirection * 2;
+                            veryLastDirection = 2;
                             mView.game.move(xx, yy, 2);
-                        } else if (((dy <= -SWIPE_THRESHOLD_VELOCITY && Math.abs(dy) >= Math.abs(dx)) || y - startingY <= -MOVE_THRESHOLD)) {
+                        } else if (((dy <= -SWIPE_THRESHOLD_VELOCITY && Math.abs(dy) >= Math.abs(dx)) || y - startingY <= -MOVE_THRESHOLD) && previousDirection % 3 != 0) {
                             moved = true;
                             previousDirection = previousDirection * 3;
+                            veryLastDirection = 3;
                             mView.game.move(xx, yy, 0);
                         }
                         //Horizontal
-                        if (((dx >= SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX >= MOVE_THRESHOLD)) {
+                        if (((dx >= SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX >= MOVE_THRESHOLD) && previousDirection % 5 != 0) {
                             moved = true;
                             previousDirection = previousDirection * 5;
+                            veryLastDirection = 5;
                             mView.game.move(xx, yy, 1);
-                        } else if (((dx <= -SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX <= -MOVE_THRESHOLD)) {
+                        } else if (((dx <= -SWIPE_THRESHOLD_VELOCITY && Math.abs(dx) >= Math.abs(dy)) || x - startingX <= -MOVE_THRESHOLD) && previousDirection % 7 != 0) {
                             moved = true;
                             previousDirection = previousDirection * 7;
+                            veryLastDirection = 7;
                             mView.game.move(xx, yy, 3);
                         }
                         if (moved) {
@@ -97,10 +127,11 @@ public class GameListener implements View.OnTouchListener {
                 x = event.getX();
                 y = event.getY();
                 previousDirection = 1;
+                veryLastDirection = 1;
                 //Double tap check
                 if (beganOnGrid) {
                     if (System.currentTimeMillis() - timer >= LONG_PRESS_TIME) {
-                       // mView.game.checkWinState();
+                        mView.game.checkWinState();
                     }
                 }
                 //"Menu" inputs

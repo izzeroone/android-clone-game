@@ -479,8 +479,8 @@ public class GameView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(getResources().getColor(R.color.text_white));
         for (int xx = 1; xx < bitmapCell.length; xx++) {
-            //int value = (int) Math.pow(2, xx);
-            int value = xx;
+            int value = (int) Math.pow(2, xx);
+            //int value = xx;
             paint.setTextSize(cellTextSize);
             float tempTextSize = cellTextSize * cellSize * 0.9f / Math.max(cellSize * 0.9f, paint.measureText(String.valueOf(value)));
             paint.setTextSize(tempTextSize);

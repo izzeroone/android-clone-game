@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">CloneProject</string>
+    <string name="app_name">Clone</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="header">2048</string>
     <string name="high_score">HIGH SCORE</string>
     <string name="win_score">WIN SCORE</string>
     <string name="score">SCORE</string>
