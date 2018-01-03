@@ -29,11 +29,15 @@ public class MenuView extends View {
     public int sXLeftArrow;
     public int sXRightArrow;
     public int sYArrow;
+    public Rect logoRect = new Rect();
+    public Rect companyLogoRect = new Rect();
     // Background
     private Bitmap background;
     private Drawable playIcon;
     private Drawable leftArrow;
     private Drawable rightArrow;
+    private Drawable gameLogo;
+    private Drawable companyLogo;
     // Grid size string
     private final int NUM_GRID_TYPE = 4;
     private String[] gridSizeText = new String[NUM_GRID_TYPE];
@@ -57,6 +61,8 @@ public class MenuView extends View {
             playIcon = getResources().getDrawable(R.drawable.ic_play_button);
             leftArrow = getResources().getDrawable(R.drawable.ic_left_arrow);
             rightArrow = getResources().getDrawable(R.drawable.ic_right_arrow);
+            gameLogo = getResources().getDrawable(R.drawable.game_logo);
+            companyLogo = getResources().getDrawable(R.drawable.company_logo);
             gridSizeText[0] = getResources().getString(R.string._3x3);
             gridSizeText[1] = getResources().getString(R.string._4x4);
             gridSizeText[2] = getResources().getString(R.string._5x5);
@@ -170,6 +176,8 @@ public class MenuView extends View {
         drawDrawable(canvas, playIcon, playButtonRect);
         drawDrawable(canvas, leftArrow, sXLeftArrow, sYArrow, sXLeftArrow + iconSize, sYArrow + iconSize);
         drawDrawable(canvas, rightArrow, sXRightArrow, sYArrow, sXRightArrow + iconSize, sYArrow + iconSize);
+        drawDrawable(canvas, gameLogo, logoRect);
+        drawDrawable(canvas, companyLogo, companyLogoRect);
     }
 
 
@@ -192,6 +200,18 @@ public class MenuView extends View {
         imgDisplayRect.right = width * 5 / 6;
         imgDisplayRect.bottom = height / 2 - iconPadding;
         imgDisplayRect.top = imgDisplayRect.bottom - width * 2 / 3;
+
+        logoRect.left = width / 4;
+        logoRect.right = width * 3 / 4;
+        logoRect.bottom = height * 19 / 20;
+        logoRect.top = (int)(logoRect.bottom - (1.f * logoRect.width() / gameLogo.getIntrinsicWidth() * gameLogo.getIntrinsicHeight()));
+
+        companyLogoRect.left = 0;
+        companyLogoRect.right = width / 5;
+        companyLogoRect.top = 0;
+        companyLogoRect.bottom = (int)(companyLogoRect.top + (1.f * companyLogoRect.width() / companyLogo.getIntrinsicWidth() * companyLogo.getIntrinsicHeight()));
+        Log.d(TAG, String.valueOf(logoRect.bottom));
+        Log.d(TAG, String.valueOf(logoRect.top));
         resyncTime();
     }
 
