@@ -67,6 +67,7 @@ public class GameView extends View {
     private Drawable backgroundRectangle;
     private Drawable lightUpRectangle;
     private Drawable iconLeftRectangle;
+    private Drawable iconLeftRectangleDisable;
     private Drawable iconRightRectangle;
     private Drawable iconRectangle;
     private Bitmap background = null;
@@ -93,6 +94,7 @@ public class GameView extends View {
             backgroundRectangle = resources.getDrawable(R.drawable.background_rectangle);
             lightUpRectangle = resources.getDrawable(R.drawable.light_up_rectangle);
             iconLeftRectangle = resources.getDrawable(R.drawable.icon_rectangle_left);
+            iconLeftRectangleDisable = resources.getDrawable(R.drawable.icon_rectangle_left_disable);
             iconRightRectangle = resources.getDrawable(R.drawable.icon_rectangle_right);
             iconRectangle = resources.getDrawable(R.drawable.icon_rectangle);
             this.setBackgroundColor(resources.getColor(R.color.background));
@@ -112,6 +114,7 @@ public class GameView extends View {
 
         canvas.drawBitmap(background, 0, 0, paint);
 
+        drawUndoButton(canvas);
         drawScoreText(canvas);
         drawTimePercent(canvas);
 
@@ -225,12 +228,22 @@ public class GameView extends View {
 
     private void drawUndoButton(Canvas canvas) {
 
-        drawDrawable(canvas,
-                iconLeftRectangle,
-                sXUndo,
-                sYIcons, sXUndo + (int) (iconSize * 1.2),
-                sYIcons + iconSize
-        );
+        if(game.canUndo){
+            drawDrawable(canvas,
+                    iconLeftRectangle,
+                    sXUndo,
+                    sYIcons, sXUndo + (int) (iconSize * 1.2),
+                    sYIcons + iconSize
+            );
+        } else{
+            drawDrawable(canvas,
+                    iconLeftRectangleDisable,
+                    sXUndo,
+                    sYIcons, sXUndo + (int) (iconSize * 1.2),
+                    sYIcons + iconSize);
+        }
+
+
 
         drawDrawable(canvas,
                 getResources().getDrawable(R.drawable.ic_action_undo),
@@ -467,7 +480,6 @@ public class GameView extends View {
         background = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(background);
         drawNewGameButton(canvas, false);
-        drawUndoButton(canvas);
         drawCheckButton(canvas);
         drawHomeButton(canvas);
 
@@ -479,8 +491,8 @@ public class GameView extends View {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(getResources().getColor(R.color.text_white));
         for (int xx = 1; xx < bitmapCell.length; xx++) {
-            int value = (int) Math.pow(2, xx);
-            //int value = xx;
+            //int value = (int) Math.pow(2, xx);
+            int value = xx;
             paint.setTextSize(cellTextSize);
             float tempTextSize = cellTextSize * cellSize * 0.9f / Math.max(cellSize * 0.9f, paint.measureText(String.valueOf(value)));
             paint.setTextSize(tempTextSize);
